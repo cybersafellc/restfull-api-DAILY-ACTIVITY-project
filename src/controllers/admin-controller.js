@@ -21,4 +21,13 @@ const login = async (req, res, next) => {
   }
 };
 
-export default { create, login };
+const get = async (req, res, next) => {
+  try {
+    const result = await adminService.get(req.id);
+    new Responses(res).success(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { create, login, get };

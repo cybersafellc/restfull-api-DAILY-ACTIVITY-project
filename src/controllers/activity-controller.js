@@ -29,4 +29,15 @@ const adminGet = async (req, res, next) => {
   }
 };
 
-export default { create, get, adminGet };
+const deletes = async (req, res, next) => {
+  try {
+    req.body.user_id = await req.id;
+    const result = await activityService.deletes(req.body);
+    result.message = await "success deletes";
+    new Responses(res).success(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { create, get, adminGet, deletes };

@@ -10,4 +10,6 @@ const login = Joi.object({
   password: Joi.string().required(),
 });
 
-export default { create, login };
+const get = Joi.number().required();
+
+export default { create, login, get };

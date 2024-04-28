@@ -49,4 +49,16 @@ const login = async (request) => {
   }
 };
 
-export default { create, login };
+const get = async (id) => {
+  const result = await validate(adminValidation.get, id);
+  return await prismaClient.admin.findFirst({
+    where: {
+      id: result,
+    },
+    select: {
+      username: true,
+    },
+  });
+};
+
+export default { create, login, get };

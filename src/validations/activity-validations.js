@@ -7,4 +7,9 @@ const create = Joi.object({
 
 const get = Joi.number().required();
 
-export default { create, get };
+const deletes = Joi.object({
+  user_id: Joi.number().required(),
+  id_forDel: Joi.number().required(),
+});
+
+export default { create, get, deletes };

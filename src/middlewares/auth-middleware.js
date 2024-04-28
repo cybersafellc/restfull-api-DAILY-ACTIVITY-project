@@ -19,6 +19,22 @@ const admin = async (req, res, next) => {
   }
 };
 
+const adminCreateSecurity = async (req, res, next) => {
+  try {
+    const { apikey } = await req.query;
+    if (!apikey) {
+      throw new ResponseError(400, "apikey required");
+    }
+    if (apikey === (await process.env.ADMIN_APIKEY)) {
+      next();
+    } else {
+      throw new ResponseError(400, "invalid apikey");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 const user = async (req, res, next) => {
   try {
     const cookie = await req.cookies.token;
@@ -37,4 +53,4 @@ const user = async (req, res, next) => {
   }
 };
 
-export default { admin, user };
+export default { adminCreateSecurity, admin, user };

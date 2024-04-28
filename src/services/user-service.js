@@ -49,4 +49,25 @@ const login = async (request) => {
   }
 };
 
-export default { create, login };
+const get = async (id) => {
+  const result = await validate(userValidation.get, id);
+  return await prismaClient.user.findFirst({
+    where: {
+      id: result,
+    },
+    select: {
+      username: true,
+    },
+  });
+};
+
+const adminGet = async () => {
+  return await prismaClient.user.findMany({
+    select: {
+      id: true,
+      username: true,
+    },
+  });
+};
+
+export default { create, login, get, adminGet };

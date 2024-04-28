@@ -19,4 +19,22 @@ const login = async (req, res, next) => {
     next(error);
   }
 };
-export default { create, login };
+
+const get = async (req, res, next) => {
+  try {
+    const result = await userService.get(req.id);
+    new Responses(res).success(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const adminGet = async (req, res, next) => {
+  try {
+    const result = await userService.adminGet();
+    new Responses(res).success(result);
+  } catch (error) {
+    next(error);
+  }
+};
+export default { create, login, get, adminGet };

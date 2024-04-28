@@ -7,9 +7,7 @@ import GenereteId from "../generateId/genereteId.js";
 const create = async (request) => {
   const result = await validate(activityValidations.create, request);
   const count = await prismaClient.activity.count({
-    where: {
-      details: result.details,
-    },
+    where: result,
   });
   if (count) {
     throw new ResponseError(400, "this activity already exist");
@@ -52,4 +50,29 @@ const adminGet = async () => {
   return await prismaClient.activity.findMany();
 };
 
-export default { create, get, adminGet };
+const deletes = async (request) => {
+  const result = await validate(activityValidations.deletes, request);
+  const count = await prismaClient.activity.count({
+    where: {
+      id: result.id_forDel,
+      user_id: result.user_id,
+    },
+  });
+  if (!count) {
+    throw new ResponseError(
+      400,
+      `id_forDel ${result.id_forDel} does not exist`
+    );
+  }
+  return await prismaClient.activity.delete({
+    where: {
+      user_id: result.user_id,
+      id: result.id_forDel,
+    },
+    select: {
+      details: true,
+    },
+  });
+};
+
+export default { create, get, adminGet, deletes };
